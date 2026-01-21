@@ -11,27 +11,33 @@ export default function Navbar() {
         gap: 12,
         padding: 12,
         borderBottom: "1px solid #ddd",
+        alignItems: "center",
       }}
     >
       <Link to="/">Home</Link>
       <Link to="/cart">Cart</Link>
       <Link to="/orders">Orders</Link>
-      <Link to="/login">Login</Link>
 
-      {/* przykład linku do produktu */}
-      <Link to="/product/1">Product #1</Link>
-      {user ? (
-        <>
-          <span style={{ marginLeft: 12 }}>Logged: {user.email}</span>
-          <button onClick={logout} style={{ marginLeft: 12 }}>
-            Logout
-          </button>
-        </>
-      ) : (
-        <Link to="/login" style={{ marginLeft: 12 }}>
-          Login
-        </Link>
-      )}
+      <div
+        style={{
+          marginLeft: "auto",
+          display: "flex",
+          gap: 12,
+          alignItems: "center",
+        }}
+      >
+        {user ? (
+          <>
+            <span>Logged: {user.email}</span>
+            <button onClick={logout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </>
+        )}
+      </div>
     </nav>
   );
 }

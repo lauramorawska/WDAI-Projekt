@@ -6,6 +6,8 @@ import LoginPage from "./pages/LoginPage";
 import OrdersPage from "./pages/OrdersPage";
 import Navbar from "./components/Navbar";
 import OrderDetailsPage from "./pages/OrderDetailsPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import RegisterPage from "./pages/RegisterPage";
 
 export default function App() {
   return (
@@ -14,11 +16,33 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/product/:id" element={<ProductPage />} />
-        <Route path="/cart" element={<CartPage />} />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <CartPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/orders" element={<OrdersPage />} />
-        <Route path="/orders/:id" element={<OrderDetailsPage />} />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <OrdersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders/:id"
+          element={
+            <ProtectedRoute>
+              <OrderDetailsPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </div>
   );

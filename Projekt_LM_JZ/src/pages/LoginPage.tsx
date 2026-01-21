@@ -57,11 +57,6 @@ export default function LoginPage() {
           Sign in
         </button>
       </form>
-
-      <p style={{ marginTop: 16, opacity: 0.8 }}>
-        Test accounts: user1@test.com / 1234, user2@test.com / 1234,
-        admin@test.com / admin
-      </p>
     </div>
   );
 }

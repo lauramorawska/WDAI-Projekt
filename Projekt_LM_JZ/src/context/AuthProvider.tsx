@@ -7,6 +7,7 @@ import {
   saveAuthUserId,
 } from "../storage/authStorage";
 import { AuthContext } from "./AuthContext";
+import { loadUsers } from "../storage/usersStorage";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userId, setUserId] = useState<string | null>(() => loadAuthUserId());
@@ -17,9 +18,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [userId]);
 
   function login(email: string, password: string) {
-    const found = usersMock.find(
+    const allUsers = [...usersMock, ...loadUsers()];
+    const found = allUsers.find(
       (u) => u.email === email && u.password === password,
     );
+
     if (!found) return false;
     setUserId(found.id);
     saveAuthUserId(found.id);
