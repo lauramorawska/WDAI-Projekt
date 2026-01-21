@@ -1,18 +1,11 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { CartItem } from "../types/CartItem";
 import type { Product } from "../types/Product";
 import { loadCart, saveCart } from "../storage/cartStorage";
-
-type CartContextValue = {
-  items: CartItem[];
-  addToCart: (product: Product, quantity: number) => void;
-  removeFromCart: (productId: number) => void;
-  setQuantity: (productId: number, quantity: number) => void;
-  clearCart: () => void;
-  totalPrice: number;
-};
-
-const CartContext = createContext<CartContextValue | null>(null);
+import type { Order } from "../types/Order";
+import { loadOrders, saveOrders } from "../storage/ordersStorage";
+import { CartContext } from "./CartContext";
+import type { CartContextValue } from "../types/CartContextValue";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => loadCart());
@@ -57,20 +50,37 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return items.reduce((sum, x) => sum + x.product.price * x.quantity, 0);
   }, [items]);
 
+  function checkout() {
+    if (items.length === 0) return;
+
+    const now = new Date();
+    const newOrder: Order = {
+      id: crypto.randomUUID(),
+      createdAt: now.toISOString(),
+      items: items.map((x) => ({
+        product: x.product,
+        quantity: x.quantity,
+        unitPrice: x.product.price,
+      })),
+      totalPrice: totalPrice,
+    };
+
+    const prevOrders = loadOrders();
+    const updated = [newOrder, ...prevOrders];
+    saveOrders(updated);
+
+    clearCart();
+  }
+
   const value: CartContextValue = {
     items,
     addToCart,
     removeFromCart,
     setQuantity,
     clearCart,
+    checkout,
     totalPrice,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
-}
-
-export function useCart() {
-  const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart must be used inside CartProvider");
-  return ctx;
 }

@@ -5,6 +5,7 @@ import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
 import OrdersPage from "./pages/OrdersPage";
 import Navbar from "./components/Navbar";
+import OrderDetailsPage from "./pages/OrderDetailsPage";
 
 export default function App() {
   return (
@@ -16,8 +17,8 @@ export default function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/orders" element={<OrdersPage />} />
-
-        {/* fallback dla nieistniejących stron */}
+        <Route path="/orders/:id" element={<OrderDetailsPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </div>
   );

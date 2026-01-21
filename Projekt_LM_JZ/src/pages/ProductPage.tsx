@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProductById } from "../services/productsApi";
 import type { Product } from "../types/Product";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../context/useCart";
 
 export default function ProductPage() {
   const { id } = useParams(); // id z URL np. /product/5
   const productId = Number(id);
 
   const [product, setProduct] = useState<Product | null>(null);
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState("1");
   const [message, setMessage] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(true);
@@ -81,15 +81,19 @@ export default function ProductPage() {
             <input
               type="number"
               value={qty}
-              min={1}
-              onChange={(e) => setQty(Math.max(1, Number(e.target.value)))}
+              onChange={(e) => setQty(e.target.value)}
               style={{ marginLeft: 8, width: 90, padding: 6 }}
             />
           </label>
 
           <button
             onClick={() => {
-              addToCart(product, qty);
+              const quantity = Number(qty);
+              if (isNaN(quantity) || quantity <= 0) {
+                setMessage("Quantity must be a number greater than 0");
+                return;
+              }
+              addToCart(product, quantity);
               setMessage("Added to cart!");
               window.setTimeout(() => setMessage(null), 2000);
             }}
@@ -98,7 +102,14 @@ export default function ProductPage() {
           </button>
         </div>
         {message && (
-          <p style={{ marginTop: 12, color: "lightgreen" }}>{message}</p>
+          <p
+            style={{
+              marginTop: 12,
+              color: message.includes("must") ? "red" : "lightgreen",
+            }}
+          >
+            {message}
+          </p>
         )}
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 Projekt Laury Morawskiej i Jakuba Zimy na przedmiot Wstęp do aplikacji internetowych
 
-## Działanie aplikacji
+## Dokumentacja
 
 - Utworzono projekt w **React + TypeScript (Vite)** i uruchomiono środowisko developerskie.
 - Dodano **routing (react-router-dom)** i podstawową nawigację (Navbar) z podstronami:

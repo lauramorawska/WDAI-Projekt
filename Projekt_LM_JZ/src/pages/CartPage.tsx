@@ -1,8 +1,14 @@
-import { useCart } from "../context/CartContext";
+import { useCart } from "../context/useCart";
 
 export default function CartPage() {
-  const { items, removeFromCart, setQuantity, clearCart, totalPrice } =
-    useCart();
+  const {
+    items,
+    removeFromCart,
+    setQuantity,
+    clearCart,
+    checkout,
+    totalPrice,
+  } = useCart();
 
   if (items.length === 0) {
     return (
@@ -68,9 +74,7 @@ export default function CartPage() {
 
       <div style={{ display: "flex", gap: 12 }}>
         <button onClick={clearCart}>Clear cart</button>
-        <button onClick={() => alert("Checkout (na razie test)")}>
-          Checkout
-        </button>
+        <button onClick={checkout}>Checkout</button>
       </div>
     </div>
   );
