@@ -1,17 +1,18 @@
 import { useMemo } from "react";
-import { loadOrders } from "../storage/ordersStorage";
+import { loadOrdersByUserId } from "../storage/ordersStorage";
 import { Link } from "react-router-dom";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 
 export default function OrdersPage() {
-  const orders = useMemo(() => loadOrders(), []);
   const { user } = useAuth();
   const location = useLocation();
 
   if (!user) {
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
+
+  const orders = useMemo(() => loadOrdersByUserId(user.id), [user.id]);
 
   if (orders.length === 0) {
     return (

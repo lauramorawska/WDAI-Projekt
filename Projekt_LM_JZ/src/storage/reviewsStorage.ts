@@ -20,6 +20,16 @@ export function getReviewsByProduct(productId: number): Review[] {
   return loadAll().filter((r) => r.productId === productId);
 }
 
+export function getUserReviewForProduct(
+  userId: string,
+  productId: number,
+): Review | null {
+  const all = loadAll();
+  return (
+    all.find((r) => r.userId === userId && r.productId === productId) || null
+  );
+}
+
 export function addReview(review: Review) {
   const all = loadAll();
   saveAll([review, ...all]);

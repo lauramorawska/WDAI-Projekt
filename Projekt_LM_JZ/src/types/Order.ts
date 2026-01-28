@@ -7,8 +7,9 @@ export type OrderItem = {
 };
 
 export type Order = {
-  id: string;         
+  id: string;
   createdAt: string;
+  userId: string;
   items: OrderItem[];
   totalPrice: number;
 };

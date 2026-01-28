@@ -12,6 +12,11 @@ export function loadOrders(): Order[] {
   }
 }
 
+export function loadOrdersByUserId(userId: string): Order[] {
+  const all = loadOrders();
+  return all.filter((o) => o.userId === userId);
+}
+
 export function saveOrders(orders: Order[]) {
   localStorage.setItem(KEY, JSON.stringify(orders));
 }

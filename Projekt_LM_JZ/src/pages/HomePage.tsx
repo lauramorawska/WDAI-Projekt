@@ -33,26 +33,83 @@ export default function HomePage() {
   }, [products, query]);
 
   return (
-    <div style={{ padding: 16, width: "100%" }}>
-      <h1>Products</h1>
+    <div
+      style={{
+        padding: "2rem",
+        width: "100%",
+        maxWidth: "1200px",
+        margin: "0 auto",
+      }}
+    >
+      <div style={{ marginBottom: "2rem" }}>
+        <h1 style={{ marginBottom: "0.5rem" }}>🛍️ Our Products</h1>
+        <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem" }}>
+          Discover our amazing collection
+        </p>
+      </div>
 
-      <input
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search products..."
-        style={{ padding: 8, width: "100%", maxWidth: 420, marginBottom: 16 }}
-      />
+      <div style={{ marginBottom: "2rem" }}>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="🔍 Search products..."
+          style={{
+            padding: "0.75rem 1rem",
+            width: "100%",
+            maxWidth: "400px",
+            borderRadius: "8px",
+            border: "2px solid var(--border-color)",
+            fontSize: "1rem",
+            transition: "all 0.3s ease",
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.borderColor = "var(--primary-color)";
+            e.currentTarget.style.boxShadow =
+              "0 0 0 3px rgba(99, 102, 241, 0.1)";
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.borderColor = "var(--border-color)";
+            e.currentTarget.style.boxShadow = "none";
+          }}
+        />
+      </div>
 
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {loading && (
+        <div style={{ textAlign: "center", padding: "3rem" }}>
+          <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)" }}>
+            ⏳ Loading products...
+          </p>
+        </div>
+      )}
 
-      {!loading && !error && (
+      {error && (
+        <div
+          style={{
+            padding: "1rem",
+            background: "rgba(239, 68, 68, 0.1)",
+            borderRadius: "8px",
+            color: "var(--danger-color)",
+          }}
+        >
+          ❌ {error}
+        </div>
+      )}
+
+      {!loading && !error && filtered.length === 0 && (
+        <div style={{ textAlign: "center", padding: "3rem" }}>
+          <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)" }}>
+            No products found
+          </p>
+        </div>
+      )}
+
+      {!loading && !error && filtered.length > 0 && (
         <div
           style={{
             width: "100%",
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: 16,
+            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+            gap: "1.5rem",
           }}
         >
           {filtered.map((p) => (

@@ -11,6 +11,7 @@ import {
   deleteReview,
   getReviewsByProduct,
   updateReview,
+  getUserReviewForProduct,
 } from "../storage/reviewsStorage";
 
 export default function ProductPage() {
@@ -164,62 +165,69 @@ export default function ProductPage() {
               marginBottom: 16,
             }}
           >
-            <h3 style={{ marginTop: 0 }}>Add review</h3>
+            {getUserReviewForProduct(user.id, product.id) ? (
+              <p style={{ color: "orange" }}>You already have a review for this product. You can edit or delete it below.</p>
+            ) : (
+              <>
+                <h3 style={{ marginTop: 0 }}>Add review</h3>
 
-            <label>
-              Rating (1-5):
-              <input
-                type="number"
-                min={1}
-                max={5}
-                value={rating}
-                onChange={(e) => setRating(e.target.value)}
-                style={{ marginLeft: 8, width: 80, padding: 6 }}
-              />
-            </label>
+                <label>
+                  Rating (1-5):
+                  <input
+                    type="number"
+                    min={1}
+                    max={5}
+                    value={rating}
+                    onChange={(e) => setRating(e.target.value)}
+                    style={{ marginLeft: 8, width: 80, padding: 6 }}
+                  />
+                </label>
 
-            <div style={{ marginTop: 12 }}>
-              <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Write your opinion..."
-                style={{ width: "100%", minHeight: 80, padding: 8 }}
-              />
-            </div>
+                <div style={{ marginTop: 12 }}>
+                  <textarea
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder="Write your opinion..."
+                    style={{ width: "100%", minHeight: 80, padding: 8 }}
+                  />
+                </div>
 
-            {reviewError && <p style={{ color: "red" }}>{reviewError}</p>}
+                {reviewError && <p style={{ color: "red" }}>{reviewError}</p>}
 
-            <button
-              onClick={() => {
-                setReviewError(null);
+                <button
+                  onClick={() => {
+                    setReviewError(null);
 
-                const r = Number(rating);
-                if (!Number.isFinite(r) || r < 1 || r > 5) {
-                  setReviewError("Rating must be between 1 and 5");
-                  return;
-                }
-                if (text.trim().length < 3) {
-                  setReviewError("Review text is too short");
-                  return;
-                }
+                    const r = Number(rating);
+                    if (!Number.isFinite(r) || r < 1 || r > 5) {
+                      setReviewError("Rating must be between 1 and 5");
+                      return;
+                    }
+                    if (text.trim().length < 3) {
+                      setReviewError("Review text is too short");
+                      return;
+                    }
 
-                const newReview: Review = {
-                  id: crypto.randomUUID(),
-                  productId: product.id,
-                  authorEmail: user.email,
-                  rating: r,
-                  text: text.trim(),
-                  createdAt: new Date().toISOString(),
-                };
+                    const newReview: Review = {
+                      id: crypto.randomUUID(),
+                      productId: product.id,
+                      userId: user.id,
+                      authorEmail: user.email,
+                      rating: r,
+                      text: text.trim(),
+                      createdAt: new Date().toISOString(),
+                    };
 
-                addReview(newReview);
-                setReviews(getReviewsByProduct(product.id));
-                setText("");
-                setRating("5");
-              }}
-            >
-              Add review
-            </button>
+                    addReview(newReview);
+                    setReviews(getReviewsByProduct(product.id));
+                    setText("");
+                    setRating("5");
+                  }}
+                >
+                  Add review
+                </button>
+              </>
+            )}
           </div>
         )}
 

@@ -6,9 +6,11 @@ import type { Order } from "../types/Order";
 import { loadOrders, saveOrders } from "../storage/ordersStorage";
 import { CartContext } from "./CartContext";
 import type { CartContextValue } from "../types/CartContextValue";
+import { useAuth } from "./useAuth";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => loadCart());
+  const { user } = useAuth();
 
   // zapis do localStorage po każdej zmianie koszyka
   useEffect(() => {
@@ -51,12 +53,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items]);
 
   function checkout() {
-    if (items.length === 0) return;
+    if (items.length === 0 || !user) return;
 
     const now = new Date();
     const newOrder: Order = {
       id: crypto.randomUUID(),
       createdAt: now.toISOString(),
+      userId: user.id,
       items: items.map((x) => ({
         product: x.product,
         quantity: x.quantity,

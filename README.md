@@ -34,7 +34,7 @@ Projekt Laury Morawskiej i Jakuba Zimy na przedmiot Wstęp do aplikacji internet
 
 ### Koszyk
 
-- Zaimplementowano **koszyk globalny** (Context) z zapisem do **localStorage**:
+- Zaimplementowano **koszyk** (Context) z zapisem do **localStorage**:
   - dodawanie produktu (zwiększanie ilości jeśli już jest w koszyku)
   - usuwanie produktu
   - zmiana ilości
@@ -50,3 +50,8 @@ Projekt Laury Morawskiej i Jakuba Zimy na przedmiot Wstęp do aplikacji internet
 - Zaimplementowano **historię zamówień** (`/orders`) – pobranie całej historii i wyświetlenie listy.
 - Zaimplementowano **szczegóły zamówienia** (`/orders/:id`) – pobranie pojedynczego zamówienia i wyświetlenie produktów, ilości oraz sumy.
 - Strony `/orders` i `/orders/:id` są **zabezpieczone** – wymagają zalogowania.
+
+### Recenzje
+
+- Zaimplementowano dodawanie recenzji przez zalogowanych użytkowników
+  - dany użytkownik może dodać maksymalnie jedną opinię
